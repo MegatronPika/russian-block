@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双人晋级俄罗斯方块</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 主菜单 -->
+        <div id="mainMenu" class="screen">
+            <div class="menu-container">
+                <h1 class="title">双人晋级俄罗斯方块</h1>
+                <div class="menu-buttons">
+                    <button id="createRoomBtn" class="btn btn-primary">创建房间</button>
+                    <button id="joinRoomBtn" class="btn btn-secondary">加入房间</button>
+                    <button id="viewRoomsBtn" class="btn btn-secondary">查看房间</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 创建房间 -->
+        <div id="createRoomScreen" class="screen hidden">
+            <div class="form-container">
+                <h2>创建房间</h2>
+                <form id="createRoomForm">
+                    <div class="form-group">
+                        <label for="createPlayerName">你的名字:</label>
+                        <input type="text" id="createPlayerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="roomId">房间ID:</label>
+                        <input type="text" id="roomId" required>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">创建</button>
+                        <button type="button" id="backToMain" class="btn btn-secondary">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 加入房间 -->
+        <div id="joinRoomScreen" class="screen hidden">
+            <div class="form-container">
+                <h2>加入房间</h2>
+                <form id="joinRoomForm">
+                    <div class="form-group">
+                        <label for="joinPlayerName">你的名字:</label>
+                        <input type="text" id="joinPlayerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="joinRoomId">房间ID:</label>
+                        <input type="text" id="joinRoomId" required>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">加入</button>
+                        <button type="button" id="backToMain2" class="btn btn-secondary">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 房间列表 -->
+        <div id="roomsScreen" class="screen hidden">
+            <div class="rooms-container">
+                <h2>可用房间</h2>
+                <div id="roomsList" class="rooms-list"></div>
+                <button id="backToMain3" class="btn btn-secondary">返回</button>
+            </div>
+        </div>
+
+        <!-- 等待房间 -->
+        <div id="waitingRoom" class="screen hidden">
+            <div class="waiting-container">
+                <h2>等待对手加入...</h2>
+                <div id="waitingPlayers" class="players-list"></div>
+                <div class="room-info">
+                    <p>房间ID: <span id="waitingRoomId"></span></p>
+                </div>
+                <button id="leaveWaitingRoom" class="btn btn-secondary">离开房间</button>
+            </div>
+        </div>
+
+        <!-- 游戏界面 -->
+        <div id="gameScreen" class="screen hidden">
+            <div class="game-container">
+                <div class="game-header">
+                    <h2>双人俄罗斯方块</h2>
+                    <div class="room-info">
+                        <span>房间: <span id="gameRoomId"></span></span>
+                    </div>
+                </div>
+                
+                <div class="game-boards">
+                    <!-- 玩家1 -->
+                    <div class="player-board">
+                        <div class="player-info">
+                            <h3 id="player1Name">玩家1</h3>
+                            <div class="stats">
+                                <div>分数: <span id="player1Score">0</span></div>
+                                <div>等级: <span id="player1Level">1</span></div>
+                                <div>行数: <span id="player1Lines">0</span></div>
+                            </div>
+                        </div>
+                        <canvas id="board1" width="300" height="600"></canvas>
+                        <div class="next-piece">
+                            <h4>下一个:</h4>
+                            <canvas id="nextPiece1" width="120" height="120"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- 玩家2 -->
+                    <div class="player-board">
+                        <div class="player-info">
+                            <h3 id="player2Name">玩家2</h3>
+                            <div class="stats">
+                                <div>分数: <span id="player2Score">0</span></div>
+                                <div>等级: <span id="player2Level">1</span></div>
+                                <div>行数: <span id="player2Lines">0</span></div>
+                            </div>
+                        </div>
+                        <canvas id="board2" width="300" height="600"></canvas>
+                        <div class="next-piece">
+                            <h4>下一个:</h4>
+                            <canvas id="nextPiece2" width="120" height="120"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-controls">
+                    <div class="controls-info">
+                        <h4>控制说明:</h4>
+                        <p>← → : 左右移动</p>
+                        <p>↓ : 加速下降</p>
+                        <p>↑ : 旋转</p>
+                        <p>空格 : 硬降落</p>
+                    </div>
+                    <button id="leaveGame" class="btn btn-secondary">离开游戏</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 游戏结束 -->
+        <div id="gameOverScreen" class="screen hidden">
+            <div class="game-over-container">
+                <h2>游戏结束</h2>
+                <div id="gameResults" class="results"></div>
+                <div class="game-over-buttons">
+                    <button id="playAgain" class="btn btn-primary">再来一局</button>
+                    <button id="backToMain4" class="btn btn-secondary">返回主菜单</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
