@@ -3,6 +3,7 @@ let socket = null;
 let currentRoom = null;
 let currentPlayer = null;
 let gameState = null;
+let currentPlayerId = null;
 
 // DOM 元素
 const screens = {
@@ -19,6 +20,7 @@ const screens = {
 document.addEventListener('DOMContentLoaded', () => {
     initializeSocket();
     setupEventListeners();
+    setupMobileControls();
     showScreen('mainMenu');
 });
 
@@ -28,6 +30,7 @@ function initializeSocket() {
     
     socket.on('connect', () => {
         console.log('已连接到服务器');
+        currentPlayerId = socket.id;
     });
     
     socket.on('disconnect', () => {
@@ -89,6 +92,40 @@ function setupEventListeners() {
     
     // 键盘控制
     document.addEventListener('keydown', handleKeyPress);
+}
+
+// 设置移动端控制
+function setupMobileControls() {
+    // 移动端控制按钮
+    document.getElementById('leftBtn').addEventListener('click', () => {
+        if (socket && gameState) {
+            socket.emit('movePiece', { direction: 'left' });
+        }
+    });
+    
+    document.getElementById('rightBtn').addEventListener('click', () => {
+        if (socket && gameState) {
+            socket.emit('movePiece', { direction: 'right' });
+        }
+    });
+    
+    document.getElementById('downBtn').addEventListener('click', () => {
+        if (socket && gameState) {
+            socket.emit('movePiece', { direction: 'down' });
+        }
+    });
+    
+    document.getElementById('rotateBtn').addEventListener('click', () => {
+        if (socket && gameState) {
+            socket.emit('rotatePiece');
+        }
+    });
+    
+    document.getElementById('hardDropBtn').addEventListener('click', () => {
+        if (socket && gameState) {
+            socket.emit('hardDrop');
+        }
+    });
 }
 
 // 显示指定屏幕
@@ -228,24 +265,33 @@ function startGame() {
 function updateGame(data) {
     gameState = data;
     
-    // 更新玩家信息
-    data.players.forEach((player, index) => {
-        const playerNum = index + 1;
+    // 找到当前玩家和对手
+    const currentPlayerData = data.players.find(player => player.id === currentPlayerId);
+    const opponentData = data.players.find(player => player.id !== currentPlayerId);
+    
+    if (currentPlayerData) {
+        // 更新主玩家信息
+        document.getElementById('mainPlayerName').textContent = currentPlayerData.name;
+        document.getElementById('mainPlayerScore').textContent = currentPlayerData.score;
+        document.getElementById('mainPlayerLevel').textContent = currentPlayerData.level;
+        document.getElementById('mainPlayerLines').textContent = currentPlayerData.lines;
         
-        // 更新玩家名字
-        document.getElementById(`player${playerNum}Name`).textContent = player.name;
+        // 绘制主玩家游戏板
+        drawBoard('mainBoard', currentPlayerData.board, currentPlayerData.currentPiece);
+        drawNextPiece('mainNextPiece', currentPlayerData.nextPiece);
+    }
+    
+    if (opponentData) {
+        // 更新对手信息
+        document.getElementById('opponentName').textContent = opponentData.name;
+        document.getElementById('opponentScore').textContent = opponentData.score;
+        document.getElementById('opponentLevel').textContent = opponentData.level;
+        document.getElementById('opponentLines').textContent = opponentData.lines;
         
-        // 更新统计信息
-        document.getElementById(`player${playerNum}Score`).textContent = player.score;
-        document.getElementById(`player${playerNum}Level`).textContent = player.level;
-        document.getElementById(`player${playerNum}Lines`).textContent = player.lines;
-        
-        // 绘制游戏板
-        drawBoard(`board${playerNum}`, player.board, player.currentPiece);
-        
-        // 绘制下一个方块
-        drawNextPiece(`nextPiece${playerNum}`, player.nextPiece);
-    });
+        // 绘制对手游戏板（小尺寸）
+        drawBoard('opponentBoard', opponentData.board, opponentData.currentPiece);
+        drawNextPiece('opponentNextPiece', opponentData.nextPiece);
+    }
 }
 
 // 绘制游戏板
@@ -322,7 +368,7 @@ function drawNextPiece(canvasId, piece) {
     
     if (!piece) return;
     
-    const cellSize = 20;
+    const cellSize = canvas.width / 6; // 假设最大方块宽度为6
     const offsetX = (canvas.width - piece.shape[0].length * cellSize) / 2;
     const offsetY = (canvas.height - piece.shape.length * cellSize) / 2;
     

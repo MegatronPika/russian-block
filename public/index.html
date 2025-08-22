@@ -93,49 +93,66 @@
                     </div>
                 </div>
                 
-                <div class="game-boards">
-                    <!-- 玩家1 -->
-                    <div class="player-board">
-                        <div class="player-info">
-                            <h3 id="player1Name">玩家1</h3>
-                            <div class="stats">
-                                <div>分数: <span id="player1Score">0</span></div>
-                                <div>等级: <span id="player1Level">1</span></div>
-                                <div>行数: <span id="player1Lines">0</span></div>
+                <div class="game-layout">
+                    <!-- 主游戏区域 -->
+                    <div class="main-game-area">
+                        <div class="player-board main-player">
+                            <div class="player-info">
+                                <h3 id="mainPlayerName">玩家</h3>
+                                <div class="stats">
+                                    <div>分数: <span id="mainPlayerScore">0</span></div>
+                                    <div>等级: <span id="mainPlayerLevel">1</span></div>
+                                    <div>行数: <span id="mainPlayerLines">0</span></div>
+                                </div>
                             </div>
-                        </div>
-                        <canvas id="board1" width="300" height="600"></canvas>
-                        <div class="next-piece">
-                            <h4>下一个:</h4>
-                            <canvas id="nextPiece1" width="120" height="120"></canvas>
+                            <canvas id="mainBoard" width="300" height="600"></canvas>
+                            <div class="next-piece">
+                                <h4>下一个:</h4>
+                                <canvas id="mainNextPiece" width="120" height="120"></canvas>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 玩家2 -->
-                    <div class="player-board">
-                        <div class="player-info">
-                            <h3 id="player2Name">玩家2</h3>
-                            <div class="stats">
-                                <div>分数: <span id="player2Score">0</span></div>
-                                <div>等级: <span id="player2Level">1</span></div>
-                                <div>行数: <span id="player2Lines">0</span></div>
+                    <!-- 对手信息区域 -->
+                    <div class="opponent-area">
+                        <div class="opponent-board">
+                            <div class="player-info">
+                                <h3 id="opponentName">对手</h3>
+                                <div class="stats">
+                                    <div>分数: <span id="opponentScore">0</span></div>
+                                    <div>等级: <span id="opponentLevel">1</span></div>
+                                    <div>行数: <span id="opponentLines">0</span></div>
+                                </div>
+                            </div>
+                            <canvas id="opponentBoard" width="150" height="300"></canvas>
+                            <div class="next-piece">
+                                <h4>下一个:</h4>
+                                <canvas id="opponentNextPiece" width="60" height="60"></canvas>
                             </div>
                         </div>
-                        <canvas id="board2" width="300" height="600"></canvas>
-                        <div class="next-piece">
-                            <h4>下一个:</h4>
-                            <canvas id="nextPiece2" width="120" height="120"></canvas>
-                        </div>
+                    </div>
+                </div>
+
+                <!-- 移动端控制按钮 -->
+                <div class="mobile-controls">
+                    <div class="control-row">
+                        <button id="rotateBtn" class="control-btn rotate-btn">旋转</button>
+                    </div>
+                    <div class="control-row">
+                        <button id="leftBtn" class="control-btn left-btn">←</button>
+                        <button id="downBtn" class="control-btn down-btn">↓</button>
+                        <button id="rightBtn" class="control-btn right-btn">→</button>
+                    </div>
+                    <div class="control-row">
+                        <button id="hardDropBtn" class="control-btn hard-drop-btn">硬降落</button>
                     </div>
                 </div>
 
                 <div class="game-controls">
                     <div class="controls-info">
                         <h4>控制说明:</h4>
-                        <p>← → : 左右移动</p>
-                        <p>↓ : 加速下降</p>
-                        <p>↑ : 旋转</p>
-                        <p>空格 : 硬降落</p>
+                        <p class="desktop-controls">← → : 左右移动 | ↓ : 加速下降 | ↑ : 旋转 | 空格 : 硬降落</p>
+                        <p class="mobile-controls">使用下方按钮控制</p>
                     </div>
                     <button id="leaveGame" class="btn btn-secondary">离开游戏</button>
                 </div>

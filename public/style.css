@@ -9,6 +9,7 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     color: #333;
+    touch-action: manipulation;
 }
 
 #app {
@@ -67,6 +68,7 @@ body {
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
+    user-select: none;
 }
 
 .btn-primary {
@@ -230,37 +232,61 @@ body {
 /* 游戏界面样式 */
 .game-container {
     background: rgba(255, 255, 255, 0.95);
-    padding: 30px;
+    padding: 20px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     width: 100%;
+    max-width: 1000px;
 }
 
 .game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
     border-bottom: 2px solid #eee;
 }
 
 .game-header h2 {
     color: #333;
+    font-size: 1.5rem;
 }
 
-.game-boards {
+/* 新的游戏布局 */
+.game-layout {
     display: flex;
-    gap: 40px;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.main-game-area {
+    flex: 1;
+    display: flex;
     justify-content: center;
-    margin-bottom: 30px;
+}
+
+.opponent-area {
+    width: 200px;
+    flex-shrink: 0;
 }
 
 .player-board {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
+}
+
+.main-player {
+    min-width: 320px;
+}
+
+.opponent-board {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 15px;
+    border: 2px solid #ddd;
 }
 
 .player-info {
@@ -268,23 +294,26 @@ body {
 }
 
 .player-info h3 {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     color: #333;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .stats {
     display: flex;
-    gap: 20px;
-    font-size: 1rem;
+    gap: 15px;
+    font-size: 0.9rem;
     color: #666;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .stats div {
-    background: #f8f9fa;
-    padding: 8px 12px;
+    background: #fff;
+    padding: 6px 10px;
     border-radius: 6px;
     border: 1px solid #ddd;
+    white-space: nowrap;
 }
 
 canvas {
@@ -298,8 +327,9 @@ canvas {
 }
 
 .next-piece h4 {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: #333;
+    font-size: 0.9rem;
 }
 
 .next-piece canvas {
@@ -307,11 +337,58 @@ canvas {
     background: #f8f9fa;
 }
 
+/* 移动端控制按钮 */
+.mobile-controls {
+    display: none;
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+}
+
+.control-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.control-row:last-child {
+    margin-bottom: 0;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    touch-action: manipulation;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.6);
+}
+
+.rotate-btn, .hard-drop-btn {
+    width: 120px;
+    border-radius: 30px;
+    font-size: 1rem;
+}
+
 .game-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 20px;
+    padding-top: 15px;
     border-top: 2px solid #eee;
 }
 
@@ -320,13 +397,14 @@ canvas {
 }
 
 .controls-info h4 {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: #333;
+    font-size: 1rem;
 }
 
 .controls-info p {
     margin-bottom: 5px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 /* 游戏结束样式 */
@@ -383,24 +461,69 @@ canvas {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-    .game-boards {
-        flex-direction: column;
-        gap: 20px;
+    .title {
+        font-size: 2rem;
     }
     
-    .stats {
+    .game-layout {
         flex-direction: column;
-        gap: 10px;
+        gap: 15px;
+    }
+    
+    .main-game-area {
+        order: 1;
+    }
+    
+    .opponent-area {
+        order: 2;
+        width: 100%;
+    }
+    
+    .opponent-board {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+    }
+    
+    .opponent-board .player-info {
+        flex: 1;
+        text-align: left;
+    }
+    
+    .opponent-board canvas {
+        width: 100px;
+        height: 200px;
+    }
+    
+    .opponent-board .next-piece canvas {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .mobile-controls {
+        display: block;
+        order: 3;
+    }
+    
+    .desktop-controls {
+        display: none;
+    }
+    
+    .mobile-controls-text {
+        display: block;
     }
     
     .game-controls {
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
         text-align: center;
+        order: 4;
     }
     
-    .title {
-        font-size: 2rem;
+    .stats {
+        flex-direction: column;
+        gap: 8px;
     }
     
     .form-buttons {
@@ -409,6 +532,60 @@ canvas {
     
     .game-over-buttons {
         flex-direction: column;
+    }
+    
+    .control-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+    
+    .rotate-btn, .hard-drop-btn {
+        width: 100px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .screen {
+        padding: 10px;
+    }
+    
+    .menu-container,
+    .form-container,
+    .rooms-container,
+    .waiting-container,
+    .game-container,
+    .game-over-container {
+        padding: 20px;
+    }
+    
+    .title {
+        font-size: 1.5rem;
+    }
+    
+    .game-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .game-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .main-player {
+        min-width: auto;
+    }
+    
+    #mainBoard {
+        width: 250px;
+        height: 500px;
+    }
+    
+    #mainNextPiece {
+        width: 80px;
+        height: 80px;
     }
 }
 
@@ -442,4 +619,15 @@ canvas {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* 触摸优化 */
+@media (hover: none) and (pointer: coarse) {
+    .btn:hover {
+        transform: none;
+    }
+    
+    .control-btn:hover {
+        transform: none;
+    }
 }
