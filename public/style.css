@@ -237,6 +237,7 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     width: 100%;
     max-width: 1000px;
+    position: relative;
 }
 
 .game-header {
@@ -337,24 +338,44 @@ canvas {
     background: #f8f9fa;
 }
 
-/* 移动端控制按钮 */
-.mobile-controls {
+/* 移动端控制按钮 - 重新设计 */
+.mobile-controls-overlay {
     display: none;
-    margin: 20px 0;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 10;
 }
 
-.control-row {
+.mobile-controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 15px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    pointer-events: none;
 }
 
-.control-row:last-child {
-    margin-bottom: 0;
+.control-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: auto;
+}
+
+.left-controls {
+    align-items: flex-start;
+}
+
+.right-controls {
+    align-items: flex-end;
 }
 
 .control-btn {
@@ -368,20 +389,23 @@ canvas {
     transition: all 0.2s ease;
     user-select: none;
     touch-action: manipulation;
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: rgba(102, 126, 234, 0.9);
     color: white;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
 }
 
 .control-btn:active {
     transform: scale(0.95);
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.6);
+    background: rgba(102, 126, 234, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .rotate-btn, .hard-drop-btn {
-    width: 120px;
-    border-radius: 30px;
-    font-size: 1rem;
+    width: 80px;
+    height: 50px;
+    border-radius: 25px;
+    font-size: 0.9rem;
 }
 
 .game-controls {
@@ -501,9 +525,8 @@ canvas {
         height: 40px;
     }
     
-    .mobile-controls {
+    .mobile-controls-overlay {
         display: block;
-        order: 3;
     }
     
     .desktop-controls {
@@ -541,8 +564,9 @@ canvas {
     }
     
     .rotate-btn, .hard-drop-btn {
-        width: 100px;
-        font-size: 0.9rem;
+        width: 70px;
+        height: 45px;
+        font-size: 0.8rem;
     }
 }
 
@@ -586,6 +610,22 @@ canvas {
     #mainNextPiece {
         width: 80px;
         height: 80px;
+    }
+    
+    .mobile-controls {
+        padding: 15px;
+    }
+    
+    .control-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 0.9rem;
+    }
+    
+    .rotate-btn, .hard-drop-btn {
+        width: 60px;
+        height: 40px;
+        font-size: 0.75rem;
     }
 }
 

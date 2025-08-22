@@ -133,18 +133,18 @@
                     </div>
                 </div>
 
-                <!-- 移动端控制按钮 -->
-                <div class="mobile-controls">
-                    <div class="control-row">
-                        <button id="rotateBtn" class="control-btn rotate-btn">旋转</button>
-                    </div>
-                    <div class="control-row">
-                        <button id="leftBtn" class="control-btn left-btn">←</button>
-                        <button id="downBtn" class="control-btn down-btn">↓</button>
-                        <button id="rightBtn" class="control-btn right-btn">→</button>
-                    </div>
-                    <div class="control-row">
-                        <button id="hardDropBtn" class="control-btn hard-drop-btn">硬降落</button>
+                <!-- 移动端控制按钮 - 重新设计 -->
+                <div class="mobile-controls-overlay">
+                    <div class="mobile-controls">
+                        <div class="control-section left-controls">
+                            <button id="leftBtn" class="control-btn left-btn">←</button>
+                            <button id="downBtn" class="control-btn down-btn">↓</button>
+                            <button id="rightBtn" class="control-btn right-btn">→</button>
+                        </div>
+                        <div class="control-section right-controls">
+                            <button id="rotateBtn" class="control-btn rotate-btn">旋转</button>
+                            <button id="hardDropBtn" class="control-btn hard-drop-btn">硬降</button>
+                        </div>
                     </div>
                 </div>
 
@@ -152,7 +152,7 @@
                     <div class="controls-info">
                         <h4>控制说明:</h4>
                         <p class="desktop-controls">← → : 左右移动 | ↓ : 加速下降 | ↑ : 旋转 | 空格 : 硬降落</p>
-                        <p class="mobile-controls">使用下方按钮控制</p>
+                        <p class="mobile-controls">使用屏幕两侧按钮控制</p>
                     </div>
                     <button id="leaveGame" class="btn btn-secondary">离开游戏</button>
                 </div>
